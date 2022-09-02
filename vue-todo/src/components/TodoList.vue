@@ -64,4 +64,13 @@ export default {
     margin-left: auto;
     color: #de4343;
   }
+
+  /* 리스트 아이템 트랜지션 효과 */
+  .list-enter-active, .list-leave-active {
+    transition: all 0.6s;
+  }
+  .list-enter, .list-leave-to {
+    opacity: 0;
+    transform: translateY(10px);
+  }
 </style>
