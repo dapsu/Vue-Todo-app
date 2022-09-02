@@ -16,13 +16,7 @@ export default {
   },
   methods: {
     addTodo: function() {
-      let obj = {   // 텍스트값이 체크되었는지 여부 확인하는 객체
-        completed: false,
-        item: this.newTodoItem
-      };
-      console.log(this.newTodoItem);
-      // 저장하는 로직
-      localStorage.setItem(this.newTodoItem, JSON.stringify(obj));  // 로컬스토리지에 저장
+      this.$emit('addTodoItem', this.newTodoItem);
       this.clearInput();
     },
     clearInput: function() {

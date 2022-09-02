@@ -1,8 +1,8 @@
 <template>
   <div>
     <ul>
-      <li v-for="(todoItem, index) in todoItems" v-bind:key="todoItem.item" class="shadow">
-        <span v-on:click="toggleComplete(todoItem)">
+      <li v-for="(todoItem, index) in propsdata" v-bind:key="todoItem.item" class="shadow">
+        <span v-on:click="toggleComplete(todoItem, index)">
           <i class="fas fa-check checkBtn" v-bind:class="{checkBtnCompleted: todoItem.completed}"></i>
         </span>
         <span v-bind:class="{textCompleted: todoItem.completed}">
@@ -18,31 +18,13 @@
 
 <script>
 export default {
-  data: function() {
-    return {
-      todoItems: [],
-    }
-  },
-  // 라이프사이클에서 인스턴스 생성하는 시점에서 호출되는 메소드
-  created: function() {
-    if (localStorage.length > 0) {
-      for (let i = 0; i < localStorage.length; i++) {
-        if (localStorage.key(i) !== 'loglevel:webpack-dev-server') {
-          this.todoItems.push(JSON.parse(localStorage.getItem(localStorage.key(i))));
-        }
-      }
-    }
-  },
+  props: ['propsdata'],
   methods: {
     removeTodo: function(todoItem, index) {
-      localStorage.removeItem(todoItem.item);
-      this.todoItems.splice(index, 1);
+      this.$emit('removeOneItem', todoItem, index);
     },
-    toggleComplete: function(todoItem) {
-      todoItem.completed = !todoItem.completed;
-      // 로컬스토리지를 업데이트하는 api가 없기 때문에 삭제 후 다시 생성
-      localStorage.removeItem(todoItem.item);
-      localStorage.setItem(todoItem.item, JSON.stringify(todoItem));
+    toggleComplete: function(todoItem, index) {
+      this.$emit('toggleItem', todoItem, index);
     }
   }
 }
