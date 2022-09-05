@@ -2,13 +2,13 @@
   <div>
     <transition-group name="list" tag="ul">
       <li v-for="(todoItem, index) in this.todoItems" v-bind:key="todoItem.item" class="shadow">
-        <span @click="toggleComplete(todoItem, index)">
+        <span @click="toggleComplete({ todoItem, index })">
           <i class="fas fa-check checkBtn" v-bind:class="{checkBtnCompleted: todoItem.completed}"></i>
         </span>
         <span v-bind:class="{textCompleted: todoItem.completed}">
           {{ todoItem.item }}
         </span>
-        <span @click="removeTodo(todoItem, index)" class="removeBtn">
+        <span @click="removeTodo({ todoItem, index })" class="removeBtn">
           <i class="fas fa-trash-alt"></i>
         </span>
       </li>
@@ -17,16 +17,20 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
   
 export default {
   methods: {
-    removeTodo: function(todoItem, index) {
-      this.$store.commit('removeOneItem', { todoItem, index });
-    },
-    toggleComplete: function(todoItem, index) {
-      this.$store.commit('toggleOneItem', { todoItem, index });
-    }
+    ...mapMutations({
+      removeTodo: 'removeOneItem',  // 함수의 인자를 넣을 필요 없음. 모듈이 자체적으로 인자를 넘김
+      toggleComplete: 'toggleOneItem',
+    }),
+    // removeTodo: function(todoItem, index) {
+    //   this.$store.commit('removeOneItem', { todoItem, index });
+    // },
+    // toggleComplete: function(todoItem, index) {
+    //   this.$store.commit('toggleOneItem', { todoItem, index });
+    // }
   },
   computed: {   // 템플릿 내에서 연산이 이루어지지 않도록 computed 속성 이용
     // todoItems() {
